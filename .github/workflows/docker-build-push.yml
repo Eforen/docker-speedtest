@@ -54,7 +54,7 @@ jobs:
           # Do not use cache when building the image
           no-cache: true # optional, default is false
           # List of target platforms for build
-          platforms: linux/arm/v7 # optional
+          platforms: linux/amd64,linux/arm64,linux/arm/v7 # optional
           # Push is a shorthand for --output=type=registry
           push: true # optional, default is false
 # Retrigger
