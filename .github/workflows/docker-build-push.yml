@@ -48,9 +48,9 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }} # optional
           # List of tags
           tags: |
-            ${{DOCKER_TAG_HEAD}}:latest
-            ${{DOCKER_TAG_HEAD}}:${{github.run_number}}
-            ${{DOCKER_TAG_HEAD}}:${{github.sha}}
+            ${{ secrets.DOCKER_TAG_HEAD }}:latest
+            ${{ secrets.DOCKER_TAG_HEAD }}:${{github.run_number}}
+            ${{ secrets.DOCKER_TAG_HEAD }}:${{github.sha}}
           # Do not use cache when building the image
           no-cache: true # optional, default is false
           # List of target platforms for build
