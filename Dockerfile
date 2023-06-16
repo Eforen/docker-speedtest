@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM alpine:latest
 
 RUN apk add --no-cache wget curl \
     && wget -O speedtest-cli.tgz https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-x86_64.tgz \
