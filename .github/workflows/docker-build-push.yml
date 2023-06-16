@@ -57,3 +57,4 @@ jobs:
           platforms: linux/arm/v7 # optional
           # Push is a shorthand for --output=type=registry
           push: true # optional, default is false
+# Retrigger
