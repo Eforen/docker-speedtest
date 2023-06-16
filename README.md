@@ -61,6 +61,8 @@ the download and upload speed and 100% packet loss in the InfluxDB. For latency 
 | Variables | Default | Function |
 |-----------|---------|----------|
 | INFLUXDB_DB| speedtest | Database table to store the speed test results in. MUST be the same table name provided to the InfluxDB container. |
+| INFLUXDB_HOST | Database host to connect to. This should be the hostname that your Influx server can be reached at. |
+| INFLUXDB_PORT | Database port number to connect to on the Influx server. |
 | TEST_INTERVAL | 900 | Time in seconds until the speed test script is run again. Default is 15 minutes. May not be smaller than 5 minutes. |
 
 ## Contribution

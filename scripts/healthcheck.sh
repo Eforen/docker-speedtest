@@ -2,6 +2,8 @@
 
 INTERVAL=${TEST_INTERVAL:-60}
 MINUTE_INTERVAL=$((INTERVAL / 60))
+SERVER_HOST="${INFLUXDB_HOST:-influxdb}"
+SERVER_PORT="${INFLUXDB_PORT:-8086}"
 
 # check that speed test runs regularly by checking that file has been modified within $MINUTE_INTERVAL minutes
 if [ "$(find /opt/speedtest -mmin -$MINUTE_INTERVAL -type f -name "test_connection.log" 2>/dev/null)" ]
@@ -18,7 +20,7 @@ fi
 
 
 # ping InfluxDB and check connection works
-INFLUXDB_URL="http://influxdb:8086/ping"
+INFLUXDB_URL="http://$SERVER_HOST:$SERVER_PORT/ping"
 curl --fail -s "$INFLUXDB_URL"
 EXIT_CODE=$?
 

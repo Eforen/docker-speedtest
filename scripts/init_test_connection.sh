@@ -2,6 +2,8 @@
 FILE="/opt/speedtest/test_connection.log"
 INTERVAL=${TEST_INTERVAL:-900}
 DATABASE="${INFLUXDB_DB:-speedtest}"
+SERVER_HOST="${INFLUXDB_HOST:-influxdb}"
+SERVER_PORT="${INFLUXDB_PORT:-8086}"
 
 while true
 do
@@ -20,11 +22,11 @@ do
 			echo "Speedtest timed out."
 		fi
 		echo "Speedtest failed. No internet connection!"
-		DOWNLOAD_RESP_CODE=$(curl --silent --show-error --write-out "%{http_code}" -XPOST "http://influxdb:8086/write?db=$DATABASE" --data-binary "download,host=local value=0")
+		DOWNLOAD_RESP_CODE=$(curl --silent --show-error --write-out "%{http_code}" -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE" --data-binary "download,host=local value=0")
 		echo "Download (0 Mbit/s) send returned with $DOWNLOAD_RESP_CODE"
-		UPLOAD_RESP_CODE=$(curl --silent --show-error --write-out "%{http_code}" -XPOST "http://influxdb:8086/write?db=$DATABASE" --data-binary "upload,host=local value=0")
+		UPLOAD_RESP_CODE=$(curl --silent --show-error --write-out "%{http_code}" -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE" --data-binary "upload,host=local value=0")
 		echo "Upload (0 Mbit/s) send returned with $UPLOAD_RESP_CODE"
-		PL_RESP_CODE=$(curl --silent --show-error --write-out "%{http_code}" -XPOST "http://influxdb:8086/write?db=$DATABASE" --data-binary "packet_loss,host=local value=100")
+		PL_RESP_CODE=$(curl --silent --show-error --write-out "%{http_code}" -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE" --data-binary "packet_loss,host=local value=100")
 		echo "Packet Loss (100 %) send returned with $PL_RESP_CODE"
 	else
 		DOWNLOAD=$(cat < $FILE | grep "Download:" | awk -F " " '{print $2}')
@@ -38,15 +40,15 @@ do
 		echo "Packet Loss: $PACKET_LOSS"
 		echo "Latency: $LATENCY"
 		echo "Timestamp: $TIMESTAMP"
-		DOWNLOAD_RESP_CODE=$(curl --silent --show-error --write-out "%{http_code}" -XPOST "http://influxdb:8086/write?db=$DATABASE" --data-binary "download,host=local value=$DOWNLOAD")
+		DOWNLOAD_RESP_CODE=$(curl --silent --show-error --write-out "%{http_code}" -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE" --data-binary "download,host=local value=$DOWNLOAD")
 		echo "Download ($DOWNLOAD Mbit/s) send returned with $DOWNLOAD_RESP_CODE"
-		UPLOAD_RESP_CODE=$(curl --silent --show-error --write-out "%{http_code}" -XPOST "http://influxdb:8086/write?db=$DATABASE" --data-binary "upload,host=local value=$UPLOAD")
+		UPLOAD_RESP_CODE=$(curl --silent --show-error --write-out "%{http_code}" -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE" --data-binary "upload,host=local value=$UPLOAD")
 		echo "Upload ($UPLOAD Mbit/s) send returned with $UPLOAD_RESP_CODE"
-		PL_RESP_CODE=$(curl --silent --show-error --write-out "%{http_code}" -XPOST "http://influxdb:8086/write?db=$DATABASE" --data-binary "packet_loss,host=local value=$PACKET_LOSS")
+		PL_RESP_CODE=$(curl --silent --show-error --write-out "%{http_code}" -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE" --data-binary "packet_loss,host=local value=$PACKET_LOSS")
 		echo "Packet Loss ($PACKET_LOSS %) send returned with $PL_RESP_CODE"
-		LAT_RESP_CODE=$(curl --silent --show-error --write-out "%{http_code}" -XPOST "http://influxdb:8086/write?db=$DATABASE" --data-binary "latency,host=local value=$LATENCY")
+		LAT_RESP_CODE=$(curl --silent --show-error --write-out "%{http_code}" -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE" --data-binary "latency,host=local value=$LATENCY")
 		echo "Latency ($LATENCY ms) send returned with $LAT_RESP_CODE"
-		JITTER_RESP_CODE=$(curl --silent --show-error --write-out "%{http_code}" -XPOST "http://influxdb:8086/write?db=$DATABASE" --data-binary "jitter,host=local value=$JITTER")
+		JITTER_RESP_CODE=$(curl --silent --show-error --write-out "%{http_code}" -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE" --data-binary "jitter,host=local value=$JITTER")
 		echo "Jitter ($JITTER ms) send returned with $JITTER_RESP_CODE"
 	fi
 
