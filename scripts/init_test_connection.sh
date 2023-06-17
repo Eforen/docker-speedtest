@@ -156,6 +156,8 @@ do
 	echo "external_ip send returned with $RESP_CODE"
 	RESP_CODE=$(curl -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE&precision=s" --data-binary "speedtest,host=\"main\" packet_loss=$PACKET_LOSS ${TIMESTAMP}")
 	echo "packet_loss send returned with $RESP_CODE"
+	RESP_CODE=$(curl -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE&precision=s" --data-binary "speedtest,host=\"main\" idle_latency=$IDLE_LATENCY ${TIMESTAMP}")
+	echo "idle_latency send returned with $RESP_CODE"
 	RESP_CODE=$(curl -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE&precision=s" --data-binary "speedtest,host=\"main\" idle_latency_low=$IDLE_LATENCY_LOW ${TIMESTAMP}")
 	echo "idle_latency_low send returned with $RESP_CODE"
 	RESP_CODE=$(curl -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE&precision=s" --data-binary "speedtest,host=\"main\" idle_latency_high=$IDLE_LATENCY_HIGH ${TIMESTAMP}")
