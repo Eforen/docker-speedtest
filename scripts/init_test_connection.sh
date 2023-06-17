@@ -23,12 +23,14 @@ do
 	IDLE_LATENCY_JITTER="0"
 	
 	DOWNLOAD="0"
+	DOWNLOAD_BYTES="0"
 	DOWNLOAD_LATENCY="0"
 	DOWNLOAD_LATENCY_LOW="0"
 	DOWNLOAD_LATENCY_HIGH="0"
 	DOWNLOAD_LATENCY_JITTER="0"
 	
 	UPLOAD="0"
+	UPLOAD_BYTES="0"
 	UPLOAD_LATENCY="0"
 	UPLOAD_LATENCY_LOW="0"
 	UPLOAD_LATENCY_HIGH="0"
@@ -117,12 +119,14 @@ do
 		IDLE_LATENCY_JITTER=$(cat $FILE | jq -r '.ping.jitter')
 		
 		DOWNLOAD=$(cat $FILE | jq -r '.download.bandwidth')
+		DOWNLOAD_BYTES=$(cat $FILE | jq -r '.download.bytes')
 		DOWNLOAD_LATENCY=$(cat $FILE | jq -r '.download.latency.iqm') 
 		DOWNLOAD_LATENCY_LOW=$(cat $FILE | jq -r '.download.latency.low')
 		DOWNLOAD_LATENCY_HIGH=$(cat $FILE | jq -r '.download.latency.high')
 		DOWNLOAD_LATENCY_JITTER=$(cat $FILE | jq -r '.download.latency.jitter')
 		
 		UPLOAD=$(cat $FILE | jq -r '.upload.bandwidth')
+		UPLOAD_BYTES=$(cat $FILE | jq -r '.upload.bytes')
 		UPLOAD_LATENCY=$(cat $FILE | jq -r '.upload.latency.iqm')
 		UPLOAD_LATENCY_LOW=$(cat $FILE | jq -r '.upload.latency.low')
 		UPLOAD_LATENCY_HIGH=$(cat $FILE | jq -r '.upload.latency.high')
@@ -164,8 +168,10 @@ do
 	echo "idle_latency_high send returned with $RESP_CODE"
 	RESP_CODE=$(curl -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE&precision=s" --data-binary "speedtest,host=\"main\" idle_latency_jitter=$IDLE_LATENCY_JITTER ${TIMESTAMP}")
 	echo "idle_latency_jitter send returned with $RESP_CODE"
-	RESP_CODE=$(curl -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE&precision=s" --data-binary "speedtest,host=\"main\" download=$DOWNLOAD ${TIMESTAMP}")
-	echo "download send returned with $RESP_CODE"
+	RESP_CODE=$(curl -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE&precision=s" --data-binary "speedtest,host=\"main\" download_bits=$DOWNLOAD ${TIMESTAMP}")
+	echo "download_bits send returned with $RESP_CODE"
+	RESP_CODE=$(curl -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE&precision=s" --data-binary "speedtest,host=\"main\" download_bytes=$DOWNLOAD_BYTES ${TIMESTAMP}")
+	echo "download_bytes send returned with $RESP_CODE"
 	RESP_CODE=$(curl -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE&precision=s" --data-binary "speedtest,host=\"main\" download_latency=$DOWNLOAD_LATENCY ${TIMESTAMP}")
 	echo "download_latency send returned with $RESP_CODE"
 	RESP_CODE=$(curl -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE&precision=s" --data-binary "speedtest,host=\"main\" download_latency_low=$DOWNLOAD_LATENCY_LOW ${TIMESTAMP}")
@@ -174,8 +180,10 @@ do
 	echo "download_latency_high send returned with $RESP_CODE"
 	RESP_CODE=$(curl -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE&precision=s" --data-binary "speedtest,host=\"main\" download_latency_jitter=$DOWNLOAD_LATENCY_JITTER ${TIMESTAMP}")
 	echo "download_latency_jitter send returned with $RESP_CODE"
-	RESP_CODE=$(curl -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE&precision=s" --data-binary "speedtest,host=\"main\" upload=$UPLOAD ${TIMESTAMP}")
-	echo "upload send returned with $RESP_CODE"
+	RESP_CODE=$(curl -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE&precision=s" --data-binary "speedtest,host=\"main\" upload_bits=$UPLOAD ${TIMESTAMP}")
+	echo "upload_bits send returned with $RESP_CODE"
+	RESP_CODE=$(curl -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE&precision=s" --data-binary "speedtest,host=\"main\" upload_bytes=$UPLOAD_BYTES ${TIMESTAMP}")
+	echo "upload+bytes send returned with $RESP_CODE"
 	RESP_CODE=$(curl -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE&precision=s" --data-binary "speedtest,host=\"main\" upload_latency=$UPLOAD_LATENCY ${TIMESTAMP}")
 	echo "upload_latency send returned with $RESP_CODE"
 	RESP_CODE=$(curl -XPOST "http://$SERVER_HOST:$SERVER_PORT/write?db=$DATABASE&precision=s" --data-binary "speedtest,host=\"main\" upload_latency_low=$UPLOAD_LATENCY_LOW ${TIMESTAMP}")
